@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS `zt_protection_contracts` (
+    `id` INT AUTO_INCREMENT PRIMARY KEY,
+    `shop_id` VARCHAR(50) NOT NULL UNIQUE,
+    `zone_id` VARCHAR(50) NOT NULL,
+    `shop_label` VARCHAR(100) NOT NULL,
+    `gang_name` VARCHAR(50) NOT NULL DEFAULT 'none',
+    `current_pot` INT NOT NULL DEFAULT 0,
+    `last_payout` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

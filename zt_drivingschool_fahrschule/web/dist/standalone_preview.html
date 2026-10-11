@@ -1,0 +1,639 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instructor Tablet</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    user-select: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    background: transparent;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.tablet-frame {
+    width: 1060px;
+    height: 680px;
+    background: #09090b;
+    border: 10px solid #18181b;
+    border-radius: 36px;
+    box-shadow: 0 40px 100px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(255, 255, 255, 0.05);
+    position: relative;
+    padding: 2px;
+}
+
+.camera-hole {
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background: #27272a;
+    border-radius: 50%;
+}
+
+.tablet-screen {
+    width: 100%;
+    height: 100%;
+    background: #09090b;
+    border-radius: 26px;
+    display: flex;
+    overflow: hidden;
+    position: relative;
+}
+
+.sidebar {
+    width: 250px;
+    background: #0d0d11;
+    border-right: 1px solid #1f1f26;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 18px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 36px;
+    padding-left: 6px;
+}
+
+.brand-badge {
+    background: #2563eb;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+}
+
+.brand-text {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: -0.2px;
+}
+
+.nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+}
+
+.nav-item {
+    background: transparent;
+    border: 1px solid transparent;
+    color: #71717a;
+    padding: 12px 14px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+}
+
+.nav-icon {
+    font-size: 1rem;
+    opacity: 0.7;
+}
+
+.nav-item:hover {
+    background: #14141a;
+    color: #d4d4d8;
+}
+
+.nav-item.active {
+    background: #181820;
+    color: #ffffff;
+    border-color: #272733;
+}
+
+.nav-item.active .nav-icon {
+    opacity: 1;
+}
+
+.tablet-footer {
+    padding-top: 16px;
+    border-top: 1px solid #1f1f26;
+}
+
+.exit-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #141418;
+    border: 1px solid #27272e;
+    color: #ef4444;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.exit-btn:hover {
+    background: #1f1f26;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: #09090b;
+}
+
+.top-bar {
+    height: 58px;
+    border-bottom: 1px solid #1f1f26;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 28px;
+    background: #0d0d11;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #71717a;
+    font-size: 0.82rem;
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    background: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.4);
+}
+
+.clock {
+    color: #e4e4e7;
+    font-size: 0.88rem;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.tab-pane {
+    display: none;
+    flex: 1;
+    padding: 28px;
+    overflow-y: auto;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+.pane-header {
+    margin-bottom: 24px;
+}
+
+.pane-header h3 {
+    color: #ffffff;
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 4px;
+}
+
+.pane-header p {
+    color: #71717a;
+    font-size: 0.85rem;
+}
+
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 6px;
+}
+
+.question-block {
+    background: #0d0d11;
+    border: 1px solid #1f1f26;
+    border-radius: 10px;
+    padding: 18px 20px;
+}
+
+.question-title {
+    color: #f4f4f5;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.option-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #a1a1aa;
+    font-size: 0.88rem;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    background: #121217;
+    border: 1px solid #1d1d24;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.option-label:last-child {
+    margin-bottom: 0;
+}
+
+.option-label:hover {
+    background: #181820;
+    border-color: #272733;
+    color: #ffffff;
+}
+
+.option-label input[type="radio"] {
+    accent-color: #2563eb;
+    width: 15px;
+    height: 15px;
+}
+
+.action-bar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.primary-btn {
+    background: #2563eb;
+    color: #ffffff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+}
+
+.evaluation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.eval-card, .score-card {
+    background: #0d0d11;
+    border: 1px solid #1f1f26;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.eval-card h4, .score-card h4 {
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+    border-bottom: 1px solid #1a1a22;
+    padding-bottom: 10px;
+    letter-spacing: -0.2px;
+}
+
+.fault-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #15151c;
+    color: #d4d4d8;
+    font-size: 0.88rem;
+}
+
+.fault-btn {
+    background: #181820;
+    border: 1px solid #2d1d1f;
+    color: #ef4444;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.fault-btn:hover {
+    background: #ef4444;
+    color: #ffffff;
+}
+
+.score-display {
+    text-align: center;
+    padding: 24px 0;
+}
+
+.score-value {
+    font-size: 3.6rem;
+    font-weight: 800;
+    color: #22c55e;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -1px;
+}
+
+.score-label {
+    color: #71717a;
+    font-size: 0.8rem;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.controls-info {
+    background: #121217;
+    border: 1px solid #1e1e26;
+    padding: 12px 14px;
+    border-radius: 6px;
+    color: #a1a1aa;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    margin-bottom: 20px;
+}
+
+.controls-info code {
+    background: #1f1f28;
+    color: #f4f4f5;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.decision-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.pass-btn, .fail-btn {
+    flex: 1;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    transition: opacity 0.15s;
+}
+
+.pass-btn {
+    background: #16a34a;
+    color: #ffffff;
+}
+
+.fail-btn {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+.pass-btn:hover, .fail-btn:hover {
+    opacity: 0.9;
+}
+
+.table-container {
+    background: #0d0d11;
+    border: 1px solid #1f1f26;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    color: #d4d4d8;
+    font-size: 0.85rem;
+}
+
+.data-table th, .data-table td {
+    padding: 14px 18px;
+    text-align: left;
+    border-bottom: 1px solid #15151c;
+}
+
+.data-table th {
+    background: #121217;
+    color: #71717a;
+    font-weight: 600;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tag-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.tag-warning {
+    background: rgba(234, 179, 8, 0.1);
+    color: #eab308;
+    border: 1px solid rgba(234, 179, 8, 0.2);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+</style>
+</head>
+<body>
+    <div id="container">
+        <div class="tablet-frame">
+            <div class="camera-hole"></div>
+            <div class="tablet-screen">
+                <aside class="sidebar">
+                    <div class="brand">
+                        <div class="brand-badge">ZT</div>
+                        <div class="brand-text">DriveOS</div>
+                    </div>
+                    <nav class="nav-links">
+                        <button class="nav-item active" data-tab="theory">
+                            <span class="nav-icon">&#128221;</span>
+                            Theorie
+                        </button>
+                        <button class="nav-item" data-tab="practical">
+                            <span class="nav-icon">&#128663;</span>
+                            Praxis-Pruefung
+                        </button>
+                        <button class="nav-item" data-tab="records">
+                            <span class="nav-icon">&#128196;</span>
+                            Prueflinge
+                        </button>
+                    </nav>
+                    <div class="tablet-footer">
+                        <span id="closeBtn" class="exit-btn">Standby</span>
+                    </div>
+                </aside>
+
+                <main class="main-content">
+                    <header class="top-bar">
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            Online - Fahrschulverband San Andreas
+                        </div>
+                        <div class="clock" id="systemClock">12:00</div>
+                    </header>
+
+                    <section id="tab-theory" class="tab-pane active">
+                        <div class="pane-header">
+                            <h3>Theoretische Pruefung</h3>
+                            <p>Beantworte alle Pruefungsfragen gewissenhaft.</p>
+                        </div>
+                        <div id="quiz" class="quiz-container"><div class="question-block">
+    <div class="question-title">Frage 1 von 3: Vorfahrtsregelung innerorts</div>
+    <label class="option-label">
+        <input type="radio" name="demo1" checked>
+        <span>50 km/h (zulaessige Hoechstgeschwindigkeit)</span>
+    </label>
+    <label class="option-label">
+        <input type="radio" name="demo1">
+        <span>80 km/h auf Hauptstrassen</span>
+    </label>
+    <label class="option-label">
+        <input type="radio" name="demo1">
+        <span>120 km/h bei guenstigen Verkehrsverhaeltnissen</span>
+    </label>
+</div>
+<div class="question-block">
+    <div class="question-title">Frage 2 von 3: Ampelkreuzungen</div>
+    <label class="option-label">
+        <input type="radio" name="demo2">
+        <span>Ohne Halt sofort zuegig abbiegen</span>
+    </label>
+    <label class="option-label">
+        <input type="radio" name="demo2" checked>
+        <span>Zuerst an der Haltelinie stoppen, Querverkehr Vorrang gewaehren</span>
+    </label>
+</div></div>
+                        <div class="action-bar">
+                            <button id="submitBtn" class="primary-btn">Pruefung auswerten</button>
+                        </div>
+                    </section>
+
+                    <section id="tab-practical" class="tab-pane">
+                        <div class="pane-header">
+                            <h3>Praktische Fahrtbewertung</h3>
+                            <p>Fahrlehrer-Bedienung: Bewerte Fahrfehler in Echtzeit waehrend der Fahrt.</p>
+                        </div>
+                        <div class="evaluation-grid">
+                            <div class="eval-card">
+                                <h4>Fehlerkatalog</h4>
+                                <div class="fault-item">
+                                    <span>Vorfahrt missachtet (-20 Pkt)</span>
+                                    <button class="fault-btn" onclick="addFault(20)">Erfassen</button>
+                                </div>
+                                <div class="fault-item">
+                                    <span>Blinker nicht gesetzt (-5 Pkt)</span>
+                                    <button class="fault-btn" onclick="addFault(5)">Erfassen</button>
+                                </div>
+                                <div class="fault-item">
+                                    <span>Geschwindigkeit ueberschritten (-10 Pkt)</span>
+                                    <button class="fault-btn" onclick="addFault(10)">Erfassen</button>
+                                </div>
+                                <div class="fault-item">
+                                    <span>Bordstein touchiert (-15 Pkt)</span>
+                                    <button class="fault-btn" onclick="addFault(15)">Erfassen</button>
+                                </div>
+                            </div>
+
+                            <div class="score-card">
+                                <h4>Aktuelle Bewertung</h4>
+                                <div class="score-display">
+                                    <div class="score-value" id="currentScore">100</div>
+                                    <div class="score-label">Punkte uebrig (Min: 60)</div>
+                                </div>
+                                <div class="controls-info">
+                                    <strong>Doppelbedienung:</strong><br>
+                                    Halte <code>LEERTASTE</code> fuer Notbremsung.
+                                </div>
+                                <div class="decision-buttons">
+                                    <button class="pass-btn" onclick="finishPractical(true)">Bestehen bestaetigen</button>
+                                    <button class="fail-btn" onclick="finishPractical(false)">Nicht bestanden</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section id="tab-records" class="tab-pane">
+                        <div class="pane-header">
+                            <h3>Registrierte Prueflinge</h3>
+                            <p>Uebersicht ueber absolvierte Tests.</p>
+                        </div>
+                        <div class="table-container">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Citizen-ID</th>
+                                        <th>Theorie</th>
+                                        <th>Praxis</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ABC12345</td>
+                                        <td><span class="tag-success">Bestanden</span></td>
+                                        <td><span class="tag-warning">Offen</span></td>
+                                        <td>In Ausbildung</td>
+                                    </tr>
+                                    <tr>
+                                        <td>XYZ98765</td>
+                                        <td><span class="tag-success">Bestanden</span></td>
+                                        <td><span class="tag-success">Bestanden</span></td>
+                                        <td>Ausgestellt</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                </main>
+            </div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
+
+
